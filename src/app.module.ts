@@ -34,7 +34,7 @@ import { SmsModule } from './routers/sms/sms.module';
       port: 3306,
       username: 'root',
       password: 'q847164495',
-      database: 'nest_admin',
+      database: 'xlh',
       synchronize: true,
       autoLoadEntities: true,
       timezone: '+08:00', // 东八时区
