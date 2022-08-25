@@ -11,6 +11,8 @@ import { UploadModule } from './routers/upload/upload.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ComponModule } from './routers/compon/compon.module';
 import { SmsModule } from './routers/sms/sms.module';
+import { SortModule } from './routers/mall/sort/sort.module';
+import { SubSortModule } from './routers/mall/sub-sort/sub-sort.module';
 
 @Module({
   imports: [
@@ -44,6 +46,8 @@ import { SmsModule } from './routers/sms/sms.module';
     UploadModule,
     ComponModule,
     SmsModule,
+    SortModule,
+    SubSortModule,
   ],
   providers: [
     {
