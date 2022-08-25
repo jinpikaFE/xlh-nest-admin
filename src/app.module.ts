@@ -13,6 +13,7 @@ import { ComponModule } from './routers/compon/compon.module';
 import { SmsModule } from './routers/sms/sms.module';
 import { SortModule } from './routers/mall/sort/sort.module';
 import { SubSortModule } from './routers/mall/sub-sort/sub-sort.module';
+import { GoodsModule } from './routers/mall/goods/goods.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { SubSortModule } from './routers/mall/sub-sort/sub-sort.module';
     SmsModule,
     SortModule,
     SubSortModule,
+    GoodsModule,
   ],
   providers: [
     {

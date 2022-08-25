@@ -1,21 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
+import { Common } from 'src/entities/common.entity';
 import { Compon } from 'src/routers/compon/entities/compon.entity';
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  JoinTable,
-  ManyToMany,
-} from 'typeorm';
+import { Entity, Column, JoinTable, ManyToMany } from 'typeorm';
 
 @Entity()
-export class Role {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Role extends Common {
   @IsString({ message: '角色名必须是 String 类型' })
   @IsNotEmpty({ message: '角色不能为空' })
   @ApiProperty({ uniqueItems: true })
@@ -41,20 +31,4 @@ export class Role {
 
   @Column({ default: false })
   is_super: boolean;
-
-  @CreateDateColumn({
-    type: 'timestamp',
-    nullable: false,
-    name: 'create_time',
-    comment: '创建时间',
-  })
-  createTime: Date;
-
-  @UpdateDateColumn({
-    type: 'timestamp',
-    nullable: false,
-    name: 'update_time',
-    comment: '更新时间',
-  })
-  updateTime: Date;
 }

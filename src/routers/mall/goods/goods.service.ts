@@ -2,39 +2,26 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RuleResType } from 'src/types/global';
 import { getConnection, Repository } from 'typeorm';
-import { Good } from '../goods/entities/good.entity';
-import { CreateSubSortDto } from './dto/create-sub-sort.dto';
-import { UpdateSubSortDto } from './dto/update-sub-sort.dto';
-import { SubSort } from './entities/sub-sort.entity';
+import { CreateGoodDto } from './dto/create-good.dto';
+import { UpdateGoodDto } from './dto/update-good.dto';
+import { Good } from './entities/good.entity';
 
 @Injectable()
-export class SubSortService {
+export class GoodsService {
   constructor(
-    @InjectRepository(SubSort)
-    private readonly subSortModel: Repository<SubSort>,
     @InjectRepository(Good)
     private readonly goodModel: Repository<Good>,
   ) {}
 
-  async create(createSubSortDto: CreateSubSortDto): Promise<RuleResType<any>> {
-    const { name, goods } = createSubSortDto;
+  async create(createDto: CreateGoodDto): Promise<RuleResType<any>> {
+    const { name } = createDto;
     const connection = getConnection();
     const queryRunner = connection.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      const list = [];
-      for (let i = 0; i < goods.length; i++) {
-        const obj = await this.goodModel
-          .createQueryBuilder()
-          .where({ id: goods[i] })
-          .getOne();
-        if (!obj) throw new BadRequestException('组件id不存在');
-        list.push(obj);
-      }
-      const data = await this.subSortModel.save({
+      const data = await this.goodModel.save({
         name,
-        goods: list,
       });
       await await queryRunner.commitTransaction();
       return { code: 200, message: '创建成功', data };
@@ -46,11 +33,7 @@ export class SubSortService {
 
   async filterQuery(params): Promise<RuleResType<any>> {
     const { current = 1, pageSize = 10, name, startTime, endTime } = params;
-    let data = this.subSortModel
-      .createQueryBuilder()
-      /** 第一个是关系， 第二个是表别名 */
-      .leftJoinAndSelect('SubSort.goods', 'goods')
-      .where({});
+    let data = this.goodModel.createQueryBuilder().where({});
     if (name) {
       data = data.andWhere({ name });
     }
@@ -72,42 +55,29 @@ export class SubSortService {
   }
 
   async findAll(): Promise<RuleResType<any>> {
-    const data = await this.subSortModel
+    const data = await this.goodModel
       .createQueryBuilder()
-      .leftJoinAndSelect('SubSort.goods', 'goods')
+      /** 第一个是关系， 第二个是表别名 */
+      .leftJoinAndSelect('Sort.subSorts', 'subSorts')
       .getMany();
     return { code: 200, message: '查询成功', data };
   }
 
   async update(
     id: string,
-    updateSubSortDto: UpdateSubSortDto,
+    updateDto: UpdateGoodDto,
   ): Promise<RuleResType<any>> {
-    const { name, goods } = updateSubSortDto;
+    const { name } = updateDto;
     const connection = getConnection();
     const queryRunner = connection.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      const list = [];
-      if (goods) {
-        for (let i = 0; i < goods.length; i++) {
-          const obj = await this.goodModel
-            .createQueryBuilder()
-            .where({ id: goods[i] })
-            .getOne();
-          if (!obj) throw new BadRequestException('组件id不存在');
-          list.push(obj);
-        }
-      }
-      const sortEntity = new SubSort();
-      sortEntity.id = +id;
-      sortEntity.name = name;
-      if (goods) {
-        sortEntity.goods = list;
-      }
+      const uEntity = new Good();
+      uEntity.id = +id;
+      uEntity.name = name;
 
-      const data = await this.subSortModel.save(sortEntity);
+      const data = await this.goodModel.save(uEntity);
       await await queryRunner.commitTransaction();
       return { code: 200, message: '更新成功', data };
     } catch (e) {
@@ -117,9 +87,8 @@ export class SubSortService {
   }
 
   async findOne(id: string): Promise<RuleResType<any>> {
-    const data = await this.subSortModel
+    const data = await this.goodModel
       .createQueryBuilder()
-      .leftJoinAndSelect('SubSort.goods', 'goods')
       .where({ id })
       .getOne();
 
@@ -136,7 +105,7 @@ export class SubSortService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      const data = await this.subSortModel.delete(id);
+      const data = await this.goodModel.delete(id);
       await await queryRunner.commitTransaction();
       return { code: 200, message: '删除成功', data };
     } catch (e) {
