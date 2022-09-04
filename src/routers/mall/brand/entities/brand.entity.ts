@@ -1,0 +1,25 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { Common } from 'src/entities/common.entity';
+import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
+import { AttrKey } from '../../attr-key/entities/attr-key.entity';
+import { Product } from '../../product/entities/product.entity';
+
+@Entity('mall_brand')
+export class Brand extends Common {
+  @IsString({ message: 'name 必须是 String 类型' })
+  @IsNotEmpty({ message: 'name 不能为空' })
+  @ApiProperty({ uniqueItems: true })
+  @Column({ unique: true })
+  name: string;
+
+  @IsString({ message: 'logo 必须是 String 类型' })
+  @IsNotEmpty({ message: 'logo 不能为空' })
+  @ApiProperty()
+  @Column()
+  logo: string;
+
+  @ApiProperty()
+  @OneToMany(() => Product, (product) => product.brand)
+  product: Product[];
+}

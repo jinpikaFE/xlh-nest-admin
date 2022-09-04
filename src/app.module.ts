@@ -11,9 +11,12 @@ import { UploadModule } from './routers/upload/upload.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ComponModule } from './routers/compon/compon.module';
 import { SmsModule } from './routers/sms/sms.module';
-import { SortModule } from './routers/mall/sort/sort.module';
-import { SubSortModule } from './routers/mall/sub-sort/sub-sort.module';
-import { GoodsModule } from './routers/mall/goods/goods.module';
+import { CategoryModule } from './routers/mall/category/category.module';
+import { AttrKeyModule } from './routers/mall/attr-key/attr-key.module';
+import { AttrValModule } from './routers/mall/attr-val/attr-val.module';
+import { ProductModule } from './routers/mall/product/product.module';
+import { ProductSpecsModule } from './routers/mall/product-specs/product-specs.module';
+import { BrandModule } from './routers/mall/brand/brand.module';
 
 @Module({
   imports: [
@@ -47,9 +50,12 @@ import { GoodsModule } from './routers/mall/goods/goods.module';
     UploadModule,
     ComponModule,
     SmsModule,
-    SortModule,
-    SubSortModule,
-    GoodsModule,
+    CategoryModule,
+    AttrKeyModule,
+    AttrValModule,
+    ProductModule,
+    ProductSpecsModule,
+    BrandModule,
   ],
   providers: [
     {
