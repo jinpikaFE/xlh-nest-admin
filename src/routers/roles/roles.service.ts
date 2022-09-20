@@ -146,7 +146,7 @@ export class RolesService {
       if (half_compon) {
         roleEntity.half_compon = halfComponList;
       }
-      const data = await this.roleModel.save(roleEntity);
+      const data = await queryRunner.manager.save(roleEntity);
       await await queryRunner.commitTransaction();
       return { code: 200, message: '更新成功', data };
     } catch (e) {
@@ -161,7 +161,13 @@ export class RolesService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      const data = await this.roleModel.delete(id);
+      const data = await queryRunner.manager
+        .createQueryBuilder()
+        .delete()
+        // User是实体
+        .from(Role)
+        .where({ id })
+        .execute();
       await await queryRunner.commitTransaction();
       return { code: 200, message: '删除成功', data };
     } catch (e) {

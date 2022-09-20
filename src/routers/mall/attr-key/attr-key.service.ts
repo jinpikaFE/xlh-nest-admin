@@ -147,7 +147,7 @@ export class AttrKeyService {
         upEntity.attr_val = list;
       }
 
-      const data = await this.attrKeyModel.save(upEntity);
+      const data = await queryRunner.manager.save(upEntity);
       await await queryRunner.commitTransaction();
       return { code: 200, message: '更新成功', data };
     } catch (e) {
