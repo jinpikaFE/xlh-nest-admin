@@ -38,8 +38,8 @@ export class UsersService {
       const base64Payload = token?.split?.('.')?.[1];
       const payloadBuffer = Buffer.from(base64Payload, 'base64');
       const userinfo = JSON.parse(payloadBuffer.toString());
-      const user = await this.userModel
-        .createQueryBuilder()
+      const user = await queryRunner.manager
+        .createQueryBuilder(User, 'User')
         .leftJoinAndSelect('User.role', 'role')
         .select(['User.id', 'role'])
         .where({ id: userinfo?.id })
@@ -52,25 +52,32 @@ export class UsersService {
         }
       }
 
-      const roleList = [];
+      const cUser = await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into(User)
+        .values({
+          username,
+          password: hashPwd,
+          salt,
+          email,
+          phone,
+          avatar,
+        })
+        .execute();
+
       for (let i = 0; i < role.length; i++) {
-        const roleObj = await this.roleModel
-          .createQueryBuilder()
-          .where({ id: role[i] })
+        const roleObj = await queryRunner.manager
+          .createQueryBuilder(Role, 'role')
+          .where('role.id = :id', { id: role[i] })
           .getOne();
         if (!roleObj) throw new BadRequestException(`${role[i]} 角色id不存在`);
-        roleList.push(roleObj);
+        await queryRunner.manager
+          .createQueryBuilder()
+          .relation(User, 'role')
+          .of(cUser?.raw?.insertId)
+          .add(role[i]);
       }
-
-      await this.userModel.save({
-        username,
-        password: hashPwd,
-        salt,
-        email,
-        phone,
-        role: roleList,
-        avatar,
-      });
       await queryRunner.commitTransaction();
       return { code: 200, message: '创建成功', data: null };
     } catch (e) {
@@ -181,8 +188,8 @@ export class UsersService {
       const base64Payload = token?.split?.('.')?.[1];
       const payloadBuffer = Buffer.from(base64Payload, 'base64');
       const userinfo = JSON.parse(payloadBuffer.toString());
-      const user = await this.userModel
-        .createQueryBuilder()
+      const user = await queryRunner.manager
+        .createQueryBuilder(User, 'User')
         .leftJoinAndSelect('User.role', 'role')
         .select(['User.id', 'role'])
         .where({ id: userinfo?.id })
@@ -198,9 +205,9 @@ export class UsersService {
       const roleList = [];
       if (role) {
         for (let i = 0; i < role.length; i++) {
-          const roleObj = await this.roleModel
-            .createQueryBuilder()
-            .where({ id: role[i] })
+          const roleObj = await queryRunner.manager
+            .createQueryBuilder(Role, 'role')
+            .where('role.id = :id', { id: role[i] })
             .getOne();
           if (!roleObj)
             throw new BadRequestException(`${role[i]} 角色id不存在`);
@@ -217,7 +224,7 @@ export class UsersService {
       if (role) {
         userEntity.role = roleList;
       }
-      const data = await this.userModel.save(userEntity);
+      const data = await queryRunner.manager.save(userEntity);
       if (data) {
         await queryRunner.commitTransaction();
         return { code: 200, message: '更新成功', data };
