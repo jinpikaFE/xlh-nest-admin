@@ -19,7 +19,10 @@ export class UsersService {
     private readonly roleModel: Repository<Role>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<RuleResType<any>> {
+  async create(
+    createUserDto: CreateUserDto,
+    authorization: string,
+  ): Promise<RuleResType<any>> {
     const { username, password, email, phone, role, avatar, captcha } =
       createUserDto;
     const connection = getConnection();
@@ -29,10 +32,24 @@ export class UsersService {
     try {
       const salt = makeSalt(); // 制作密码盐
       const hashPwd = encryptPassword(password, salt); // 加密密码
-      const redis = await RedisInstance.initRedis('captcha', 0);
-      const cache = await redis.get(createUserDto?.phone);
-      if (captcha !== cache) {
-        return { code: -1, message: '短信验证码错误', data: null };
+
+      /** 非超管需要短信验证 */
+      const token = authorization?.split?.(' ')?.[1]; // authorization: Bearer xxx
+      const base64Payload = token?.split?.('.')?.[1];
+      const payloadBuffer = Buffer.from(base64Payload, 'base64');
+      const userinfo = JSON.parse(payloadBuffer.toString());
+      const user = await this.userModel
+        .createQueryBuilder()
+        .leftJoinAndSelect('User.role', 'role')
+        .select(['User.id', 'role'])
+        .where({ id: userinfo?.id })
+        .getOne();
+      if (!(user?.role && user?.role?.findIndex((u) => u?.is_super) !== -1)) {
+        const redis = await RedisInstance.initRedis('captcha', 0);
+        const cache = await redis.get(createUserDto?.phone);
+        if (captcha !== cache) {
+          return { code: -1, message: '短信验证码错误', data: null };
+        }
       }
 
       const roleList = [];
@@ -151,6 +168,7 @@ export class UsersService {
   async update(
     id: string,
     updateUserDto: UpdateUserDto,
+    authorization: string,
   ): Promise<RuleResType<any>> {
     const { username, email, phone, role, avatar, captcha } = updateUserDto;
     const connection = getConnection();
@@ -158,11 +176,23 @@ export class UsersService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      const redis = await RedisInstance.initRedis('captcha', 0);
-      const cache = await redis.get(updateUserDto?.phone);
-
-      if (captcha !== cache) {
-        return { code: -1, message: '短信验证码错误', data: null };
+      /** 非超管需要短信验证 */
+      const token = authorization?.split?.(' ')?.[1]; // authorization: Bearer xxx
+      const base64Payload = token?.split?.('.')?.[1];
+      const payloadBuffer = Buffer.from(base64Payload, 'base64');
+      const userinfo = JSON.parse(payloadBuffer.toString());
+      const user = await this.userModel
+        .createQueryBuilder()
+        .leftJoinAndSelect('User.role', 'role')
+        .select(['User.id', 'role'])
+        .where({ id: userinfo?.id })
+        .getOne();
+      if (!(user?.role && user?.role?.findIndex((u) => u?.is_super) !== -1)) {
+        const redis = await RedisInstance.initRedis('captcha', 0);
+        const cache = await redis.get(updateUserDto?.phone);
+        if (captcha !== cache) {
+          return { code: -1, message: '短信验证码错误', data: null };
+        }
       }
 
       const roleList = [];

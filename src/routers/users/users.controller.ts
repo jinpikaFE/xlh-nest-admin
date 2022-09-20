@@ -9,6 +9,7 @@ import {
   UseGuards,
   UsePipes,
   Query,
+  Headers,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -28,8 +29,11 @@ export class UsersController {
   @UsePipes(new MyValidationPipe())
   @Post()
   @ApiBody({ type: CreateUserDto })
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  create(
+    @Body() createUserDto: CreateUserDto,
+    @Headers('Authorization') authorization: string,
+  ) {
+    return this.usersService.create(createUserDto, authorization);
   }
 
   @Get(':id')
@@ -45,8 +49,12 @@ export class UsersController {
   @UsePipes(new MyValidationPipe())
   @Patch(':id')
   @ApiBody({ type: UpdateUserDto })
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @Headers('Authorization') authorization: string,
+  ) {
+    return this.usersService.update(id, updateUserDto, authorization);
   }
 
   @Delete(':id')
