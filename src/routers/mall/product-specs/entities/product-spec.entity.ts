@@ -1,11 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsArray,
-  IsBoolean,
   IsInt,
-  IsJSON,
   IsNotEmpty,
   IsNumber,
+  IsObject,
   IsString,
 } from 'class-validator';
 import { Common } from 'src/entities/common.entity';
@@ -50,7 +48,7 @@ export class ProductSpec extends Common {
   @Column({ comment: '详情页标题' })
   img: string;
 
-  @IsJSON({ message: 'sku 必须是 JSON 类型' })
+  @IsObject({ message: 'sku 必须是 obj 类型' })
   @ApiProperty()
   @Column({
     type: 'simple-json',
