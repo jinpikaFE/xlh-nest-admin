@@ -13,6 +13,20 @@ import { Product } from '../../product/entities/product.entity';
 
 @Entity('mall_category')
 export class Category extends Common {
+  constructor(obj: Partial<Category>) {
+    super();
+    this.name = obj?.name;
+    this.is_show = obj?.is_show;
+    this.icon = obj?.icon;
+    this.banner = obj?.banner;
+    this.key_word = obj?.key_word;
+    this.desc = obj?.desc;
+    this.order = obj?.order;
+    this.p = obj?.p;
+    this.attr_key = obj?.attr_key;
+    this.product = obj?.product;
+  }
+
   @IsString({ message: 'name必须是 String 类型' })
   @IsNotEmpty({ message: 'name不能为空' })
   @ApiProperty({ uniqueItems: true })
@@ -56,9 +70,9 @@ export class Category extends Common {
 
   @ApiProperty()
   @OneToMany(() => AttrKey, (attrKey) => attrKey.category)
-  attr_key: AttrKey[];
+  attr_key?: AttrKey[];
 
   @ApiProperty()
   @OneToMany(() => Product, (product) => product.category)
-  product: Product[];
+  product?: Product[];
 }
