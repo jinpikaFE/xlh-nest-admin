@@ -34,6 +34,6 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document);
 
   app.useGlobalFilters(new AllExceptionsFilter());
-  await app.listen(3003);
+  await app.listen(3004);
 }
 bootstrap();
