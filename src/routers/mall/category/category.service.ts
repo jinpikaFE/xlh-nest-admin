@@ -15,9 +15,7 @@ export class CategoryService {
     private readonly categoryModel: Repository<Category>,
   ) {}
 
-  async create(
-    createCategoryDto: CreateCategoryDto,
-  ): Promise<RuleResType<any>> {
+  async create(createDto: CreateCategoryDto): Promise<RuleResType<any>> {
     const {
       name,
       is_show,
@@ -29,7 +27,7 @@ export class CategoryService {
       p,
       attr_key,
       product,
-    } = createCategoryDto;
+    } = createDto;
     const connection = getConnection();
     const queryRunner = connection.createQueryRunner();
     await queryRunner.connect();
@@ -145,7 +143,7 @@ export class CategoryService {
 
   async update(
     id: string,
-    updateProductSpecDto: UpdateCategoryDto,
+    updateDto: UpdateCategoryDto,
   ): Promise<RuleResType<any>> {
     const {
       name,
@@ -158,7 +156,7 @@ export class CategoryService {
       p,
       attr_key,
       product,
-    } = updateProductSpecDto;
+    } = updateDto;
     const connection = getConnection();
     const queryRunner = connection.createQueryRunner();
     await queryRunner.connect();
@@ -189,6 +187,7 @@ export class CategoryService {
         }
       }
       const upEntity = new Category({
+        id: +id,
         name,
         is_show,
         key_word,

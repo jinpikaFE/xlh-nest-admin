@@ -14,10 +14,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { RbacGuard } from 'src/guards/token.guard';
 import { MyValidationPipe } from 'src/pipe/validation.pipe';
-import { QueryProductVal } from '../product/dto/update-product.dto';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { QueryCategoryVal, UpdateCategoryDto } from './dto/update-category.dto';
 
 @ApiTags('mall/category')
 @UseGuards(AuthGuard('jwt'))
@@ -34,7 +33,7 @@ export class CategoryController {
   }
 
   @Get()
-  findAll(@Query() Query: QueryProductVal) {
+  findAll(@Query() Query: QueryCategoryVal) {
     return this.categoryService.findAll(Query);
   }
 
