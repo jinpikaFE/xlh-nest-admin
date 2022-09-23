@@ -30,7 +30,7 @@ export class AttrKeyService {
           .where({ id: attr_val[i] })
           .getOne();
 
-        if (!eObj) throw new BadRequestException('组件id不存在');
+        if (!eObj) throw new BadRequestException('id不存在');
         list.push(eObj);
       }
       const data = await this.attrKeyModel.save({
@@ -133,7 +133,7 @@ export class AttrKeyService {
             .createQueryBuilder()
             .where({ id: attr_val[i] })
             .getOne();
-          if (!eObj) throw new BadRequestException('组件id不存在');
+          if (!eObj) throw new BadRequestException('id不存在');
           list.push(eObj);
         }
       }

@@ -52,7 +52,7 @@ export class ProductSpecsService {
     const { current = 1, pageSize = 10, name, startTime, endTime } = params;
     let data = this.productSpecModel.createQueryBuilder().where({});
     if (name) {
-      data = data.andWhere('AttrVal.name LIKE :name', {
+      data = data.andWhere('ProductSpec.name LIKE :name', {
         name: `%${name}%`,
       });
     }

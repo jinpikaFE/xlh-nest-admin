@@ -3,8 +3,8 @@ import {
   IsArray,
   IsBoolean,
   IsInt,
-  IsJSON,
   IsNotEmpty,
+  IsObject,
   IsString,
 } from 'class-validator';
 import { Common } from 'src/entities/common.entity';
@@ -15,6 +15,43 @@ import { ProductSpec } from '../../product-specs/entities/product-spec.entity';
 
 @Entity('mall_product')
 export class Product extends Common {
+  constructor(
+    name?: any,
+    sub_title?: any,
+    desc?: any,
+    order?: any,
+    is_shelf?: any,
+    is_new?: any,
+    is_recommend?: any,
+    serve?: any,
+    detail_title?: any,
+    detail_desc?: any,
+    key_word?: any,
+    remark?: any,
+    params?: any,
+    detail_banner?: any,
+    detail_img?: any,
+    product_specs?: any,
+  ) {
+    super();
+    this.name = name;
+    this.sub_title = sub_title;
+    this.desc = desc;
+    this.order = order;
+    this.is_shelf = is_shelf;
+    this.is_new = is_new;
+    this.is_recommend = is_recommend;
+    this.serve = serve;
+    this.detail_title = detail_title;
+    this.detail_desc = detail_desc;
+    this.key_word = key_word;
+    this.remark = remark;
+    this.params = params;
+    this.detail_banner = detail_banner;
+    this.detail_img = detail_img;
+    this.product_specs = product_specs;
+  }
+
   @IsString({ message: 'name必须是 String 类型' })
   @IsNotEmpty({ message: 'name不能为空' })
   @ApiProperty({ uniqueItems: true })
@@ -85,7 +122,7 @@ export class Product extends Common {
   @Column()
   remark: string;
 
-  @IsJSON({ message: 'serve必须是 JSON 类型' })
+  @IsObject({ message: 'serve必须是 obj 类型' })
   @ApiProperty()
   @Column({
     type: 'simple-json',
