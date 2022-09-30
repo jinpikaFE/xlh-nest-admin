@@ -70,7 +70,9 @@ export class RolesService {
       /** 第一个是关系， 第二个是表别名 */
       .leftJoinAndSelect('Role.compon', 'compon')
       .leftJoinAndSelect('Role.half_compon', 'half_compon')
-      .where({});
+      .where('Role.is_super = :roleIsSuper', {
+        roleIsSuper: false,
+      });
     if (name) {
       data = data.andWhere({ name });
     }

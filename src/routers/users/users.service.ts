@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RedisInstance } from 'src/providers/database/redis';
 import { RuleResType } from 'src/types/global';
 import { encryptPassword, makeSalt } from 'src/utils/cryptogram';
-import { getConnection, Repository } from 'typeorm';
+import { getConnection, Not, Repository } from 'typeorm';
 import { Role } from '../roles/entities/role.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 
@@ -139,7 +139,9 @@ export class UsersService {
         'role',
         'compon.name',
       ])
-      .where({});
+      .where('role.is_super = :roleIsSuper', {
+        roleIsSuper: false,
+      });
     if (userName) {
       data = data.andWhere({ userName });
     }
