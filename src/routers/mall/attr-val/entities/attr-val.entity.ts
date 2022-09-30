@@ -18,6 +18,6 @@ export class AttrVal extends Common {
   order: number;
 
   @ApiProperty()
-  @ManyToOne(() => AttrKey, (attrKey) => attrKey.attr_val) // 将另一面指定为第二个参数
+  @ManyToOne(() => AttrKey, { createForeignKeyConstraints: false }) // 将另一面指定为第二个参数
   attr_key: AttrKey;
 }

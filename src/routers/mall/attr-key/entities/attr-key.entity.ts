@@ -31,7 +31,7 @@ export class AttrKey extends Common {
   order: number;
 
   @ApiProperty()
-  @ManyToOne(() => Category, (category) => category.attr_key) // 将另一面指定为第二个参数
+  @ManyToOne(() => Category, { createForeignKeyConstraints: false }) // 将另一面指定为第二个参数
   category: Category;
 
   @ApiProperty()

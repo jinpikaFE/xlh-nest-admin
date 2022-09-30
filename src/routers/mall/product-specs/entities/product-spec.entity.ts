@@ -57,6 +57,6 @@ export class ProductSpec extends Common {
   sku: Record<string, any>;
 
   @ApiProperty()
-  @ManyToOne(() => Product, (product) => product.product_specs)
+  @ManyToOne(() => Product, { createForeignKeyConstraints: false })
   product: Product;
 }

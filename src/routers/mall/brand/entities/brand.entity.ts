@@ -1,8 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 import { Common } from 'src/entities/common.entity';
-import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
-import { AttrKey } from '../../attr-key/entities/attr-key.entity';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { Product } from '../../product/entities/product.entity';
 
 @Entity('mall_brand')

@@ -32,7 +32,7 @@ export class Compon {
   @Column({ default: null })
   parentId?: string;
 
-  @ManyToOne(() => Compon, (compon) => compon.parent) // 将另一面指定为第二个参数
+  @ManyToOne(() => Compon, { createForeignKeyConstraints: false }) // 将另一面指定为第二个参数
   parent: Compon;
 
   @CreateDateColumn({

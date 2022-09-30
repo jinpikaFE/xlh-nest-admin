@@ -148,10 +148,10 @@ export class Product extends Common {
   product_specs: ProductSpec[];
 
   @ApiProperty()
-  @ManyToOne(() => Category, (category) => category.product)
+  @ManyToOne(() => Category, { createForeignKeyConstraints: false })
   category: Category;
 
   @ApiProperty()
-  @ManyToOne(() => Brand, (brand) => brand.product)
+  @ManyToOne(() => Brand, { createForeignKeyConstraints: false })
   brand: Brand;
 }

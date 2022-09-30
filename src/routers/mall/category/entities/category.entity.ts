@@ -65,7 +65,7 @@ export class Category extends Common {
   order: number;
 
   @ApiProperty()
-  @ManyToOne(() => Category, (category) => category.p) // 父节点
+  @ManyToOne(() => Category, { createForeignKeyConstraints: false }) // 父节点
   p: Category;
 
   @ApiProperty()
