@@ -91,6 +91,7 @@ export class UsersService {
       .createQueryBuilder()
       .leftJoinAndSelect('User.role', 'role')
       .leftJoinAndSelect('role.compon', 'compon')
+      .leftJoinAndSelect('role.half_compon', 'half_compon')
       .select([
         'User.id',
         'User.username',
@@ -100,7 +101,8 @@ export class UsersService {
         'User.createTime',
         'User.updateTime',
         'role',
-        'compon.name',
+        'half_compon',
+        'compon',
       ])
       .where({ id })
       .getOne();
@@ -128,6 +130,7 @@ export class UsersService {
       /** 第一个是关系， 第二个是表别名 */
       .leftJoinAndSelect('User.role', 'role')
       .leftJoinAndSelect('role.compon', 'compon')
+      .leftJoinAndSelect('role.half_compon', 'half_compon')
       .select([
         'User.id',
         'User.username',
@@ -137,7 +140,8 @@ export class UsersService {
         'User.createTime',
         'User.updateTime',
         'role',
-        'compon.name',
+        'half_compon',
+        'compon',
       ])
       .where('role.is_super = :roleIsSuper', {
         roleIsSuper: false,
