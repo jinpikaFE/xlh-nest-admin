@@ -15,41 +15,25 @@ import { ProductSpec } from '../../product-specs/entities/product-spec.entity';
 
 @Entity('mall_product')
 export class Product extends Common {
-  constructor(
-    name?: any,
-    sub_title?: any,
-    desc?: any,
-    order?: any,
-    is_shelf?: any,
-    is_new?: any,
-    is_recommend?: any,
-    serve?: any,
-    detail_title?: any,
-    detail_desc?: any,
-    key_word?: any,
-    remark?: any,
-    params?: any,
-    detail_banner?: any,
-    detail_img?: any,
-    product_specs?: any,
-  ) {
+  constructor(obj: Partial<Product>) {
     super();
-    this.name = name;
-    this.sub_title = sub_title;
-    this.desc = desc;
-    this.order = order;
-    this.is_shelf = is_shelf;
-    this.is_new = is_new;
-    this.is_recommend = is_recommend;
-    this.serve = serve;
-    this.detail_title = detail_title;
-    this.detail_desc = detail_desc;
-    this.key_word = key_word;
-    this.remark = remark;
-    this.params = params;
-    this.detail_banner = detail_banner;
-    this.detail_img = detail_img;
-    this.product_specs = product_specs;
+    this.id = obj?.id;
+    this.name = obj?.name;
+    this.sub_title = obj?.sub_title;
+    this.desc = obj?.desc;
+    this.order = obj?.order;
+    this.is_shelf = obj?.is_shelf;
+    this.is_new = obj?.is_new;
+    this.is_recommend = obj?.is_recommend;
+    this.serve = obj?.serve;
+    this.detail_title = obj?.detail_title;
+    this.detail_desc = obj?.detail_desc;
+    this.key_word = obj?.key_word;
+    this.remark = obj?.remark;
+    this.params = obj?.params;
+    this.detail_banner = obj?.detail_banner;
+    this.detail_img = obj?.detail_img;
+    this.product_specs = obj?.product_specs;
   }
 
   @IsString({ message: 'name必须是 String 类型' })

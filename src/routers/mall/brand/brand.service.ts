@@ -115,7 +115,7 @@ export class BrandService {
           list.push(eObj);
         }
       }
-      const upEntity = new Product({
+      const upEntity = new Brand({
         id,
         name,
         logo,

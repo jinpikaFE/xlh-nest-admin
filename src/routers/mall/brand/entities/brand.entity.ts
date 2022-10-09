@@ -8,6 +8,7 @@ import { Product } from '../../product/entities/product.entity';
 export class Brand extends Common {
   constructor(obj: Partial<Brand>) {
     super();
+    this.id = obj?.id;
     this.name = obj?.name;
     this.logo = obj?.logo;
     this.product = obj?.product;

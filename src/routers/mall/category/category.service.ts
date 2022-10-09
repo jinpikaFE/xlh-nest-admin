@@ -24,7 +24,7 @@ export class CategoryService {
       banner,
       desc,
       order,
-      p,
+      pId,
       attr_key,
       product,
     } = createDto;
@@ -66,7 +66,7 @@ export class CategoryService {
           banner,
           desc,
           order,
-          p,
+          pId,
           attr_key: list,
           product: list2,
         }),
@@ -153,7 +153,7 @@ export class CategoryService {
       banner,
       desc,
       order,
-      p,
+      pId,
       attr_key,
       product,
     } = updateDto;
@@ -195,7 +195,7 @@ export class CategoryService {
         banner,
         desc,
         order,
-        p,
+        pId,
         attr_key: list,
         product: list2,
       });

@@ -15,6 +15,7 @@ import { Product } from '../../product/entities/product.entity';
 export class Category extends Common {
   constructor(obj: Partial<Category>) {
     super();
+    this.id = obj?.id;
     this.name = obj?.name;
     this.is_show = obj?.is_show;
     this.icon = obj?.icon;
@@ -22,7 +23,7 @@ export class Category extends Common {
     this.key_word = obj?.key_word;
     this.desc = obj?.desc;
     this.order = obj?.order;
-    this.p = obj?.p;
+    this.pId = obj?.pId;
     this.attr_key = obj?.attr_key;
     this.product = obj?.product;
   }
@@ -65,6 +66,9 @@ export class Category extends Common {
   order: number;
 
   @ApiProperty()
+  @Column({ default: null })
+  pId?: string;
+
   @ManyToOne(() => Category, { createForeignKeyConstraints: false }) // 父节点
   p: Category;
 

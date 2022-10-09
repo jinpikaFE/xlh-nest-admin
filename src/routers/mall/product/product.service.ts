@@ -49,7 +49,7 @@ export class ProductService {
         list.push(eObj);
       }
       const data = await queryRunner.manager.save(
-        new Product(
+        new Product({
           name,
           sub_title,
           desc,
@@ -65,8 +65,8 @@ export class ProductService {
           params,
           detail_banner,
           detail_img,
-          list,
-        ),
+          product_specs: list,
+        }),
       );
       await await queryRunner.commitTransaction();
       return { code: 200, message: '创建成功', data };
@@ -171,25 +171,25 @@ export class ProductService {
           list.push(eObj);
         }
       }
-      const upEntity = new Product();
-      upEntity.name = name;
-      upEntity.sub_title = sub_title;
-      upEntity.desc = desc;
-      upEntity.order = order;
-      upEntity.is_shelf = is_shelf;
-      upEntity.is_new = is_new;
-      upEntity.is_recommend = is_recommend;
-      upEntity.serve = serve;
-      upEntity.detail_title = detail_title;
-      upEntity.detail_desc = detail_desc;
-      upEntity.key_word = key_word;
-      upEntity.remark = remark;
-      upEntity.params = params;
-      upEntity.detail_banner = detail_banner;
-      upEntity.detail_img = detail_img;
-      if (product_specs) {
-        upEntity.product_specs = list;
-      }
+      const upEntity = new Product({
+        id: +id,
+        name,
+        sub_title,
+        desc,
+        order,
+        is_shelf,
+        is_new,
+        is_recommend,
+        serve,
+        detail_title,
+        detail_desc,
+        key_word,
+        remark,
+        params,
+        detail_banner,
+        detail_img,
+        product_specs: list,
+      });
 
       const data = await queryRunner.manager.save(upEntity);
       await await queryRunner.commitTransaction();
