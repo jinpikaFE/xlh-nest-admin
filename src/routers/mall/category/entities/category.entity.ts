@@ -34,10 +34,8 @@ export class Category extends Common {
   @Column({ unique: true })
   name: string;
 
-  @IsBoolean({ message: 'is_show为Boolean类型' })
-  @IsNotEmpty({ message: 'is_show不能为空' })
   @ApiProperty()
-  @Column()
+  @Column({ default: true })
   is_show: boolean;
 
   @IsString({ message: 'icon必须是 String 类型' })
