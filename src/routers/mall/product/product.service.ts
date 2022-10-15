@@ -96,7 +96,7 @@ export class ProductService {
     }
 
     if (startTime && endTime) {
-      data = data.andWhere('createTime BETWEEN :start AND :end', {
+      data = data.andWhere('Product.createTime BETWEEN :start AND :end', {
         start: startTime,
         end: endTime,
       });

@@ -49,7 +49,7 @@ export class AttrValService {
     }
 
     if (startTime && endTime) {
-      data = data.andWhere('createTime BETWEEN :start AND :end', {
+      data = data.andWhere('AttrVal.createTime BETWEEN :start AND :end', {
         start: startTime,
         end: endTime,
       });

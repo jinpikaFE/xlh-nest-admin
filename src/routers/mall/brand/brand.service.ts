@@ -62,7 +62,7 @@ export class BrandService {
     }
 
     if (startTime && endTime) {
-      data = data.andWhere('createTime BETWEEN :start AND :end', {
+      data = data.andWhere('Category.createTime BETWEEN :start AND :end', {
         start: startTime,
         end: endTime,
       });

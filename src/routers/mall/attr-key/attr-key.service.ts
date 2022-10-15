@@ -79,7 +79,7 @@ export class AttrKeyService {
     }
 
     if (startTime && endTime) {
-      data = data.andWhere('createTime BETWEEN :start AND :end', {
+      data = data.andWhere('AttrKey.createTime BETWEEN :start AND :end', {
         start: startTime,
         end: endTime,
       });
