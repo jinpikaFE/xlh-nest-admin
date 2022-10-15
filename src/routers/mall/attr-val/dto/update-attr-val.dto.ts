@@ -4,4 +4,5 @@ import { CreateAttrValDto } from './create-attr-val.dto';
 
 export class UpdateAttrValDto extends PartialType(CreateAttrValDto) {}
 
-export type QueryAttrVal = UpdateAttrValDto & QueryCommon & { order: string };
+export type QueryAttrVal = UpdateAttrValDto &
+  QueryCommon & { order: string; noKey?: boolean };

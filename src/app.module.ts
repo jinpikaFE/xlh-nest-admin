@@ -44,6 +44,7 @@ import { BrandModule } from './routers/mall/brand/brand.module';
       synchronize: true,
       autoLoadEntities: true,
       timezone: '+08:00', // 东八时区
+      logging: true,
     }),
     UsersModule,
     RolesModule,

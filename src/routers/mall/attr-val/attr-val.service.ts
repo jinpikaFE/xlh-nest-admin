@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RuleResType } from 'src/types/global';
-import { getConnection, Repository } from 'typeorm';
+import { getConnection, IsNull, Repository } from 'typeorm';
 import { CreateAttrValDto } from './dto/create-attr-val.dto';
 import { QueryAttrVal, UpdateAttrValDto } from './dto/update-attr-val.dto';
 import { AttrVal } from './entities/attr-val.entity';
@@ -40,6 +40,7 @@ export class AttrValService {
       order,
       startTime,
       endTime,
+      noKey,
     } = params;
     let data = this.attrValModel.createQueryBuilder().where({});
     if (name) {
@@ -47,6 +48,12 @@ export class AttrValService {
         name: `%${name}%`,
       });
     }
+
+    // if (noKey) {
+    //   data = data.andWhere('AttrVal.attr_key = :attrKeyId', {
+    //     attrKeyId: IsNull(),
+    //   });
+    // }
 
     if (startTime && endTime) {
       data = data.andWhere('AttrVal.createTime BETWEEN :start AND :end', {

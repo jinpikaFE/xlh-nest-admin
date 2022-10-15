@@ -71,11 +71,15 @@ export class AttrKeyService {
     }
 
     if (is_filter) {
-      data = data.andWhere({ is_filter });
+      data = data.andWhere('AttrKey.is_filter = :is_filter', {
+        is_filter: is_filter?.toString() === 'true' ? true : false,
+      });
     }
 
     if (is_sku) {
-      data = data.andWhere({ is_sku });
+      data = data.andWhere('AttrKey.is_sku = :is_sku', {
+        is_sku: is_sku?.toString() === 'true' ? true : false,
+      });
     }
 
     if (startTime && endTime) {
