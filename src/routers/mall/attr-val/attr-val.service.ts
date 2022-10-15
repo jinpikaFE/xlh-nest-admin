@@ -40,7 +40,7 @@ export class AttrValService {
       order,
       startTime,
       endTime,
-      noKey,
+      arr_key_id,
     } = params;
     let data = this.attrValModel.createQueryBuilder().where({});
     if (name) {
@@ -49,11 +49,14 @@ export class AttrValService {
       });
     }
 
-    // if (noKey) {
-    //   data = data.andWhere('AttrVal.attr_key = :attrKeyId', {
-    //     attrKeyId: IsNull(),
-    //   });
-    // }
+    if (arr_key_id) {
+      data = data.andWhere(
+        'AttrVal.attrKeyId = :attrKeyId OR AttrVal.attrKeyId is NULL',
+        {
+          attrKeyId: arr_key_id,
+        },
+      );
+    }
 
     if (startTime && endTime) {
       data = data.andWhere('AttrVal.createTime BETWEEN :start AND :end', {

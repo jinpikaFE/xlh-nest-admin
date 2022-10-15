@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsNotEmpty, IsString } from 'class-validator';
 import { Common } from 'src/entities/common.entity';
-import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column, ManyToOne } from 'typeorm';
 import { AttrKey } from '../../attr-key/entities/attr-key.entity';
 
 @Entity('mall_attr_val')
@@ -18,6 +18,9 @@ export class AttrVal extends Common {
   order: number;
 
   @ApiProperty()
+  @Column({ default: null })
+  attrKeyId?: string;
+
   @ManyToOne(() => AttrKey, { createForeignKeyConstraints: false }) // 将另一面指定为第二个参数
   attr_key: AttrKey;
 }
