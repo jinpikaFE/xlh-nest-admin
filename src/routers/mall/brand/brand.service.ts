@@ -11,7 +11,7 @@ import { Brand } from './entities/brand.entity';
 export class BrandService {
   constructor(
     @InjectRepository(Brand)
-    private readonly categoryModel: Repository<Brand>,
+    private readonly brandModel: Repository<Brand>,
   ) {}
 
   async create(createDto: CreateBrandDto): Promise<RuleResType<any>> {
@@ -51,9 +51,9 @@ export class BrandService {
 
   async findAll(params: QueryBrandVal): Promise<RuleResType<any>> {
     const { current = 1, pageSize = 10, name, startTime, endTime } = params;
-    let data = this.categoryModel
+    let data = this.brandModel
       .createQueryBuilder()
-      .leftJoinAndSelect('Category.product', 'product')
+      .leftJoinAndSelect('Brand.product', 'product')
       .where({});
     if (name) {
       data = data.andWhere('Brand.name LIKE :name', {
@@ -62,7 +62,7 @@ export class BrandService {
     }
 
     if (startTime && endTime) {
-      data = data.andWhere('Category.createTime BETWEEN :start AND :end', {
+      data = data.andWhere('Brand.createTime BETWEEN :start AND :end', {
         start: startTime,
         end: endTime,
       });
@@ -80,9 +80,9 @@ export class BrandService {
   }
 
   async findOne(id: number): Promise<RuleResType<any>> {
-    const data = await this.categoryModel
+    const data = await this.brandModel
       .createQueryBuilder()
-      .leftJoinAndSelect('Category.product', 'product')
+      .leftJoinAndSelect('Brand.product', 'product')
       .where({ id })
       .getOne();
 
